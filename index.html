@@ -1,1 +1,118 @@
-ciao
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Stampa 3D su Ordinazione</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+      color: #333;
+      line-height: 1.6;
+    }
+    h1, h2 {
+      color: #00539C;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    textarea {
+      width: 100%;
+      height: 120px;
+      padding: 10px;
+      font-size: 1rem;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #00539C;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .note {
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 10px;
+    }
+    .response {
+      margin-top: 20px;
+      font-weight: bold;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Stampa 3D su Ordinazione</h1>
+    <h2>Come funziona?</h2>
+    <p>
+      Se sei interessato o vuoi fare una domanda, scrivi nel riquadro qua sotto con cosa vorresti stampato (anche modelli personalizzati), di che colore o materiale, e la qualità desiderata.
+    </p>
+
+    <h2>Tipo di materiale o colore?</h2>
+    <p>
+      Si possono scegliere diversi colori di stampa come <strong>giallo, rosso, viola, azzurro…</strong><br>
+      Se il colore o il materiale non è presente (ad esempio <em>glow in the dark, trasparente, elastico, conduttivo</em>), si può pagare un piccolo extra per ottenerlo.
+    </p>
+
+    <h2>Tipo di qualità?</h2>
+    <p>
+      - <strong>Qualità normale:</strong> dettaglio fino a <strong>0.2 mm</strong><br>
+      - <strong>Qualità super:</strong> dettaglio fino a <strong>0.1 mm</strong>, ma richiede più tempo ed energia
+    </p>
+
+    <h2>Consiglio personale</h2>
+    <p>
+      Consiglio la qualità normale per oggetti funzionali o pezzi di ricambio. <br>
+      Per regali o oggetti con parti meccaniche precise, meglio la qualità super: le linee di stampa saranno quasi invisibili.
+    </p>
+
+    <h2>Costi indicativi</h2>
+    <ul>
+      <li>Stampa grande (15-17 cm): <strong>25€*</strong></li>
+      <li>Stampa media (10-14 cm): <strong>20€*</strong></li>
+      <li>Stampa piccola (5-10 cm): <strong>15€*</strong></li>
+      <li>Stampa piccolissima (0-5 cm): <strong>10€*</strong></li>
+    </ul>
+    <p class="note">
+      *I costi possono variare in base alla complessità dell’oggetto<br>
+      +5€ per qualità super<br>
+      +Extra per materiali speciali (in base al prezzo)<br>
+      +Spedizione se fuori zona Bologna
+    </p>
+
+    <h2>Scrivici la tua richiesta:</h2>
+    <textarea id="richiesta" placeholder="Es. vorrei stampare un portachiavi personalizzato in PLA rosso, qualità super..."></textarea>
+    <button onclick="inviaRichiesta()">Invia Richiesta</button>
+
+    <div id="risposta" class="response"></div>
+  </div>
+
+  <script>
+    function inviaRichiesta() {
+      const richiesta = document.getElementById("richiesta").value.trim();
+      const rispostaDiv = document.getElementById("risposta");
+
+      if (richiesta.length === 0) {
+        rispostaDiv.textContent = "Per favore scrivi qualcosa prima di inviare.";
+        rispostaDiv.style.color = "red";
+      } else {
+        rispostaDiv.textContent = "Grazie! La tua richiesta è stata inviata. Ti contatteremo al più presto.";
+        rispostaDiv.style.color = "green";
+      }
+    }
+  </script>
+</body>
+</html>
+
