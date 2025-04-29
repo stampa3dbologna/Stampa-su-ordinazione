@@ -93,10 +93,12 @@
     </p>
 
     <h2>Scrivici la tua richiesta:</h2>
-    <textarea id="richiesta" placeholder="Es. vorrei stampare un portachiavi personalizzato in PLA rosso, qualità super..."></textarea>
-    <button onclick="inviaRichiesta()">Invia Richiesta</button>
+<form action="https://formsubmit.co/bastia.dario@gmail.comAA" method="POST">
+  <textarea name="messaggio" placeholder="Es. vorrei stampare un portachiavi personalizzato in PLA rosso, qualità super..." required></textarea>
+  <input type="hidden" name="_captcha" value="false">
+  <button type="submit">Invia Richiesta</button>
+</form>
 
-    <div id="risposta" class="response"></div>
   </div>
 
   <script>
