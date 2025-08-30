@@ -1,125 +1,314 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Stampa 3D su Ordinazione</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Stampa 3D su Ordinazione — Moderno</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      padding: 20px;
-      color: #333;
-      line-height: 1.6;
+    :root{
+      --bg:#f7f8fb;
+      --card:#ffffff;
+      --accent:#0b63b6;
+      --muted:#6b7280;
+      --glass: rgba(255,255,255,0.6);
+      --radius:14px;
+      --shadow: 0 6px 18px rgba(11,99,182,0.08);
+      --mono: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
     }
-    h1, h2 {
-      color: #00539C;
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:var(--mono);
+      background:linear-gradient(180deg,var(--bg),#eef2f7);
+      color:#111827;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:32px 16px 140px;
     }
-    .container {
-      max-width: 800px;
-      margin: auto;
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    .site{max-width:1100px;margin:0 auto}
+    .card{
+      background:var(--card);
+      border-radius:var(--radius);
+      padding:28px;
+      box-shadow:var(--shadow);
+      margin-bottom:20px;
+      animation:cardEntrance .45s ease both;
     }
-    textarea {
-      width: 100%;
-      height: 120px;
-      padding: 10px;
-      font-size: 1rem;
-      margin-bottom: 10px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
+
+    @keyframes cardEntrance{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+    header{display:flex;align-items:center;gap:16px}
+    .logo{
+      width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#1fa2ff);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:18px;box-shadow:0 6px 20px rgba(11,99,182,0.12);
+      transform-origin:center;animation:logoPulse 4s infinite linear;
     }
-    button {
-      background-color: #00539C;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
+    @keyframes logoPulse{0%{transform:scale(1)}50%{transform:scale(1.02)}100%{transform:scale(1)}}
+    h1{margin:0;font-size:20px}
+    p.lead{color:var(--muted);margin:10px 0 0}
+
+    /* Photo tiles */
+    .photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:14px;margin-top:18px}
+    .photo-tile{height:110px;border-radius:10px;border:2px dashed rgba(15,23,42,0.06);display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(255,255,255,0.7),rgba(250,250,250,0.9));color:var(--muted);font-size:13px;cursor:pointer;transition:transform .22s cubic-bezier(.2,.9,.2,1),box-shadow .22s}
+    .photo-tile:hover{transform:translateY(-6px) scale(1.03);box-shadow:0 8px 26px rgba(2,6,23,0.08)}
+    .photo-tile:nth-child(odd){animation:fadeUp .5s ease both}
+    .photo-tile:nth-child(even){animation:fadeUp .6s ease both}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+    /* Info and prices */
+    .grid{display:grid;grid-template-columns:1fr 320px;gap:18px}
+    @media (max-width:920px){.grid{grid-template-columns:1fr}}
+    ul.info{padding-left:1rem;color:var(--muted)}
+
+    /* Sticky request panel */
+    .sticky-form{
+      position:fixed;left:50%;transform:translateX(-50%) translateY(18px);bottom:18px;z-index:1200;width:min(980px,calc(100% - 32px));
+      border-radius:18px;padding:14px;background:linear-gradient(180deg,rgba(255,255,255,0.95),#fff);box-shadow:0 10px 40px rgba(2,6,23,0.12);
+      display:flex;gap:12px;align-items:flex-start;opacity:0;pointer-events:none;transition:transform .28s cubic-bezier(.2,.9,.2,1),opacity .28s;
     }
-    .note {
-      font-size: 0.9rem;
-      color: #666;
-      margin-top: 10px;
-    }
-    .response {
-      margin-top: 20px;
-      font-weight: bold;
-      color: green;
+    .sticky-form.open{transform:translateX(-50%) translateY(0);opacity:1;pointer-events:auto}
+
+    .form-left{flex:1;display:flex;flex-direction:column;gap:8px}
+    .form-row{display:flex;gap:8px}
+    select,input[type="email"],textarea{padding:10px;border-radius:8px;border:1px solid #e6eef8;font-size:14px;min-width:0;transition:box-shadow .18s,transform .12s}
+    input:focus,select:focus,textarea:focus{box-shadow:0 6px 18px rgba(11,99,182,0.08);transform:translateY(-2px);outline:none}
+    select{appearance:none;background-image:none}
+    .small{width:140px}
+    .btn{background:var(--accent);color:white;border:none;padding:10px 16px;border-radius:10px;cursor:pointer;font-weight:600;transition:transform .12s ease;box-shadow:0 6px 14px rgba(11,99,182,0.08)}
+    .btn:active{transform:translateY(1px) scale(.997)}
+    .ghost{background:transparent;border:1px solid #e6eef8;padding:8px 10px;border-radius:10px;color:var(--muted);cursor:pointer}
+    .progress{height:6px;background:#eef3fb;border-radius:6px;overflow:hidden}
+    .progress > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#2ab0ff);width:0%;transition:width .28s ease}
+
+    label{font-size:13px;color:var(--muted)}
+    .response{font-size:13px;color:green}
+    .error{color:#c32}
+    .muted{color:var(--muted);font-size:13px}
+
+    /* Toggle button */
+    .toggle-order{
+      position:fixed;right:18px;bottom:18px;z-index:1300;width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--accent),#1fa2ff);color:white;border:none;box-shadow:0 10px 30px rgba(11,99,182,0.18);cursor:pointer;transition:transform .18s}
+    .toggle-order:active{transform:scale(.96)}
+    .toggle-order .icon{font-weight:700}
+
+    .toggle-order.small{right:12px;bottom:12px;width:48px;height:48px}
+
+    /* subtle floating animation */
+    .toggle-order{animation:float 3.8s ease-in-out infinite}
+    @keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-6px)}100%{transform:translateY(0)}}
+
+    @media (max-width:480px){
+      .sticky-form{width:calc(100% - 24px);left:50%}
+      .toggle-order{right:10px;bottom:10px}
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Stampa 3D su Ordinazione</h1>
-    <h2>Come funziona?</h2>
-    <p>
-      Se sei interessato o vuoi fare una domanda, scrivi nel riquadro qua sotto la tua EMAIL e cosa vorresti stampato (anche modelli personalizzati), di che colore o materiale, e la qualità desiderata.
-    </p>
+  <div class="site">
+    <div class="card">
+      <header>
+        <div class="logo">3D</div>
+        <div>
+          <h1>Stampa 3D su Ordinazione</h1>
+          <p class="lead">Qualità e consigli pratici. Usa il pulsante in basso a destra per aprire il modulo d'ordine.</p>
+        </div>
+      </header>
 
-    <h2>Tipo di materiale o colore?</h2>
-    <p>
-      Si possono scegliere diversi colori di stampa come <strong>giallo, rosso, viola, azzurro…</strong><br>
-      Se il colore o il materiale non è presente (ad esempio <em>glow in the dark, trasparente, elastico, conduttivo</em>), si può pagare un piccolo extra per ottenerlo.
-    </p>
+      <div class="grid" style="margin-top:18px">
+        <main>
+          <h2>Galleria progetti finiti</h2>
+          <p class="muted">Foto stampe di progetti già finiti</p>
+          <div class="photos" aria-hidden="true">
+            <div class="photo-tile">Foto 1</div>
+            <div class="photo-tile">Foto 2</div>
+            <div class="photo-tile">Foto 3</div>
+            <div class="photo-tile">Foto 4</div>
+          </div>
 
-    <h2>Tipo di qualità?</h2>
-    <p>
-      - <strong>Qualità normale:</strong> dettaglio fino a <strong>0.2 mm</strong><br>
-      - <strong>Qualità super:</strong> dettaglio fino a <strong>0.1 mm</strong>, ma richiede più tempo ed energia
-    </p>
+          <section style="margin-top:20px">
+            <h3>Come funziona</h3>
+            <p class="muted">Scrivi la tua email e compila i campi nel pannello in basso. Il riepilogo verrà inviato via email.</p>
+            <h4 style="margin-top:12px">Qualità</h4>
+            <p class="muted">Normal: 0.2 mm. Super: 0.1 mm (+tempo).</p>
 
-    <h2>Consiglio personale</h2>
-    <p>
-      Consiglio la qualità normale per oggetti funzionali o pezzi di ricambio. <br>
-      Per regali o oggetti con parti meccaniche precise, meglio la qualità super: le linee di stampa saranno quasi invisibili.
-    </p>
+            <h4 style="margin-top:12px">Costi indicativi</h4>
+            <ul class="info">
+              <li>Grande (16-22 cm3): 20€*</li>
+              <li>Media (11-15 cm3): 15€*</li>
+              <li>Piccola (6-10 cm3): 10€*</li>
+              <li>Micro (0-5 cm3): 5€*</li>
+            </ul>
+            <p class="muted">*I costi variano con complessità. +5€ qualità super. +extra materiali speciali. +spedizione fuori Bologna.</p>
+          </section>
+        </main>
 
-    <h2>Costi indicativi</h2>
-    <ul>
-      <li>Stampa grande (16-22 cm): <strong>20€*</strong></li>
-      <li>Stampa media (11-15 cm): <strong>15€*</strong></li>
-      <li>Stampa piccola (6-10 cm): <strong>10€*</strong></li>
-      <li>Stampa piccolissima (0-5 cm): <strong>5€*</strong></li>
-    </ul>
-    <p class="note">
-      *I costi possono variare molto in base alla complessità dell’oggetto<br>
-      +5€ per qualità super<br>
-      +Extra per materiali speciali (in base al prezzo)<br>
-      +Spedizione se fuori zona Bologna
-    </p>
-
-    <h2>Scrivici la tua richiesta:</h2>
-<form action="https://formsubmit.co/bastia.dario@gmail.com" method="POST">
-  <label for="email">La tua Email:</label>
-  <input type="email" id="email" name="email" placeholder="Es. mail.mail@mail.com" required><br><br>
-  
-  <textarea name="messaggio" placeholder="Es. Vorrei stampare un portachiavi personalizzato in PLA rosso, qualità super..." required></textarea>
-  
-  <input type="hidden" name="_captcha" value="false">
-  <button type="submit">Invia Richiesta</button>
-</form>
-
-
+        <aside>
+          <div style="padding:14px;border-radius:12px;background:linear-gradient(180deg,var(--glass),#fff);box-shadow:var(--shadow)">
+            <h3 style="margin:0 0 8px 0">Consiglio</h3>
+            <p class="muted">Per pezzi funzionali scegli qualità normale. Per regali o dettagli scegli super.</p>
+          </div>
+        </aside>
+      </div>
+    </div>
   </div>
 
-  <script>
-    function inviaRichiesta() {
-      const richiesta = document.getElementById("richiesta").value.trim();
-      const rispostaDiv = document.getElementById("risposta");
+  <!-- Sticky bottom form: hidden by default, toggled by button -->
+  <form class="sticky-form" id="orderForm" action="https://formsubmit.co/bastia.dario@gmail.com" method="POST" onsubmit="return prepareAndSend(event)">
+    <div class="form-left">
+      <div style="display:flex;gap:8px;align-items:center">
+        <div style="min-width:40px"><strong>STEP</strong></div>
+        <div style="flex:1">
+          <div class="progress" aria-hidden="true"><i id="progBar"></i></div>
+        </div>
+      </div>
 
-      if (richiesta.length === 0) {
-        rispostaDiv.textContent = "Per favore scrivi qualcosa prima di inviare.";
-        rispostaDiv.style.color = "red";
-      } else {
-        rispostaDiv.textContent = "Grazie! La tua richiesta è stata inviata. Ti contatteremo al più presto.";
-        rispostaDiv.style.color = "green";
+      <div class="form-row" style="margin-top:8px">
+        <div style="flex:1">
+          <label for="material">Materiale</label>
+          <select id="material" name="material">
+            <option value="PLA">PLA</option>
+            <option value="PETG">PETG</option>
+            <option value="TPU">TPU (elastico)</option>
+            <option value="ABS">ABS</option>
+            <option value="Altro">Altro (speciale)</option>
+          </select>
+        </div>
+        <div>
+          <label for="color">Colore</label>
+          <select id="color" name="color" class="small">
+            <option value="Nero">Nero</option>
+            <option value="Bianco">Bianco</option>
+            <option value="Rosso">Rosso</option>
+            <option value="Blu">Blu</option>
+            <option value="Trasparente">Trasparente</option>
+            <option value="Glow">Glow</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row" style="margin-top:8px">
+        <div style="flex:1">
+          <label for="quality">Qualità</label>
+          <select id="quality" name="quality">
+            <option value="Normale">Normale (0.2 mm)</option>
+            <option value="Super">Super (0.1 mm) (+5€)</option>
+          </select>
+        </div>
+        <div>
+          <label for="size">Dimensione</label>
+          <select id="size" name="size" class="small">
+            <option value="Micro">Micro (0-5 cm)</option>
+            <option value="Piccola">Piccola (6-10 cm)</option>
+            <option value="Media">Media (11-15 cm)</option>
+            <option value="Grande">Grande (16-22 cm)</option>
+            <option value="Custom">Personalizzata</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:8px;margin-top:8px;align-items:flex-end">
+        <div style="flex:1">
+          <label for="email">La tua Email</label>
+          <input id="email" name="email" type="email" placeholder="tuo@mail.com" required />
+        </div>
+
+        <div style="width:120px">
+          <label for="extra" class="muted">Opzioni</label>
+          <select id="extra" name="extra" class="small">
+            <option value="Nessuno">Nessuno</option>
+            <option value="Materiale speciale">Materiale speciale (+extra)</option>
+            <option value="Consegna">Consegna (+sped.)</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="margin-top:8px;display:flex;gap:8px;align-items:center">
+        <textarea id="notes" rows="2" placeholder="Breve descrizione del pezzo, link al modello o dimensioni (opzionale)"></textarea>
+      </div>
+
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
+      <input type="hidden" name="messaggio" id="hiddenMessage" />
+      <input type="hidden" name="_captcha" value="false" />
+      <button type="submit" class="btn">Invia Richiesta</button>
+      <button type="button" class="ghost" onclick="resetForm()">Reimposta</button>
+      <div id="feedback" class="muted" style="text-align:right;min-width:180px">Compila e invia. Riceverai conferma via email.</div>
+    </div>
+  </form>
+
+  <!-- Toggle button to open/close the form -->
+  <button class="toggle-order" id="toggleOrder" aria-expanded="false" title="Ordina">
+    <span class="icon">⇪</span>
+  </button>
+
+  <script>
+    const progBar = document.getElementById('progBar');
+    const fields = ['material','color','quality','size','email'];
+    fields.forEach(f => document.getElementById(f).addEventListener('change',updateProgress));
+    function updateProgress(){
+      const total = fields.length;
+      let filled = 0;
+      for(const id of fields){
+        const el = document.getElementById(id);
+        if(el && el.value && el.value.trim() !== '') filled++;
       }
+      const pct = Math.round((filled/total)*100);
+      progBar.style.width = pct + '%';
+    }
+    updateProgress();
+
+    // toggle button logic
+    const toggle = document.getElementById('toggleOrder');
+    const sticky = document.getElementById('orderForm');
+    toggle.addEventListener('click', ()=>{
+      const opened = sticky.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', opened ? 'true' : 'false');
+      // rotate icon slightly when open
+      toggle.style.transform = opened ? 'rotate(22deg) scale(1.02)' : '';
+      // focus email when opened
+      if(opened) setTimeout(()=>document.getElementById('email').focus(),220);
+    });
+
+    function prepareAndSend(e){
+      const material = document.getElementById('material').value;
+      const color = document.getElementById('color').value;
+      const quality = document.getElementById('quality').value;
+      const size = document.getElementById('size').value;
+      const extra = document.getElementById('extra').value;
+      const notes = document.getElementById('notes').value.trim();
+      const email = document.getElementById('email').value.trim();
+
+      if(!email){
+        showFeedback('Inserisci una email valida','error');
+        e.preventDefault();
+        return false;
+      }
+
+      const text = `Materiale: ${material}
+Colore: ${color}
+Qualita: ${quality}
+Dimensione: ${size}
+Opzioni: ${extra}
+Note: ${notes}`;
+      document.getElementById('hiddenMessage').value = text;
+      showFeedback('Invio in corso... controlla la tua email per la conferma');
+      return true;
+    }
+
+    function showFeedback(txt,kind){
+      const fb = document.getElementById('feedback');
+      fb.textContent = txt;
+      fb.className = kind === 'error' ? 'error' : 'muted';
+    }
+
+    function resetForm(){
+      document.getElementById('orderForm').reset();
+      document.getElementById('hiddenMessage').value = '';
+      updateProgress();
+      showFeedback('Modulo reimpostato');
+      setTimeout(()=>showFeedback('Compila e invia. Riceverai conferma via email.'),1200);
     }
   </script>
 </body>
 </html>
-
