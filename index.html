@@ -11,7 +11,7 @@
       --accent:#0b63b6;
       --muted:#6b7280;
       --glass: rgba(255,255,255,0.6);
-      --radius:20px;
+      --radius:14px;
       --shadow: 0 6px 18px rgba(11,99,182,0.08);
       --mono: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
     }
@@ -44,7 +44,7 @@
       transform-origin:center;animation:logoPulse 4s infinite linear;
     }
     @keyframes logoPulse{0%{transform:scale(1)}50%{transform:scale(1.02)}100%{transform:scale(1)}}
-    h1{margin:0;font-size:40px}
+    h1{margin:0;font-size:20px}
     p.lead{color:var(--muted);margin:10px 0 0}
 
     /* Photo tiles */
@@ -118,12 +118,12 @@
         <main>
           <h2>Galleria progetti finiti</h2>
           <p class="muted">Foto stampe di progetti già finiti</p>
-          <div class="photos" aria-hidden="true">
-            <div class="photo-tile">Foto 1</div>
-            <div class="photo-tile">Foto 2</div>
-            <div class="photo-tile">Foto 3</div>
-            <div class="photo-tile">Foto 4</div>
-          </div>
+            <section class="gallery">
+              <div class="photo"><img src="foto1.jpg" alt="Modello 3D 1"></div>
+              <div class="photo"><img src="foto2.jpg" alt="Modello 3D 2"></div>
+              <div class="photo"><img src="foto3.jpg" alt="Modello 3D 3"></div>
+            </section>
+
 
           <section style="margin-top:20px">
             <h3>Come funziona</h3>
