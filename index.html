@@ -111,62 +111,20 @@
       .sticky-form{width:calc(100% - 24px);left:50%}
       .toggle-order{right:10px;bottom:10px}
 
-      /* 📱 Responsive migliorato */
-    @media (max-width: 768px) {
-    body {
-      padding: 16px;
-      font-size: 1rem;
-    }
-
-    h1 { font-size: 1.6rem; }
-    h2 { font-size: 1.3rem; }
-    h3 { font-size: 1.2rem; }
-
-    .grid {
-      display: block; /* niente colonne strette */
-    }
-
-    .gallery {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-    }
-
-    .photo img {
-      width: 100%;
-      height: auto;
-      margin: 0 auto;
-    }
-
-    .sticky-form {
-      width: 100%;
-      left: 0;
-      transform: none;
-      border-radius: 0;
-    }
-  
-    .toggle-order {
-      width: 64px;
-      height: 64px;
-      font-size: 1.8rem;
-    }
-
-    input, textarea, select, button {
-      width: 100%;
-      font-size: 1rem;
-    }
-    /* 📱 Mobile: form a tutto schermo */
+/* 📱 Mobile: form più stretto e alto */
 @media (max-width: 768px) {
   .sticky-form {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;      /* copre tutto lo schermo */
-    border-radius: 0;  /* niente angoli arrotondati */
-    box-shadow: none;  /* niente ombre */
-    padding: 20px;
-    overflow-y: auto;  /* scroll interno se serve */
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%); /* centrato */
+    width: 90%;          /* un po’ più stretto del full width */
+    max-height: 80%;     /* non prende tutto lo schermo */
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    overflow-y: auto;    /* scroll interno se contenuto lungo */
+    background: #fff;
   }
 
   .sticky-form h2 {
@@ -177,12 +135,13 @@
     position: fixed;
     bottom: 20px;
     right: 20px;
-    width: 64px;
-    height: 64px;
-    font-size: 1.8rem;
+    width: 60px;
+    height: 60px;
+    font-size: 1.6rem;
     z-index: 1100;
   }
 }
+
 
   }
     }
