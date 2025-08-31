@@ -110,6 +110,52 @@
     @media (max-width:480px){
       .sticky-form{width:calc(100% - 24px);left:50%}
       .toggle-order{right:10px;bottom:10px}
+
+      /* 📱 Responsive migliorato */
+    @media (max-width: 768px) {
+    body {
+      padding: 16px;
+      font-size: 1rem;
+    }
+
+    h1 { font-size: 1.6rem; }
+    h2 { font-size: 1.3rem; }
+    h3 { font-size: 1.2rem; }
+
+    .grid {
+      display: block; /* niente colonne strette */
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .photo img {
+      width: 100%;
+      height: auto;
+      margin: 0 auto;
+    }
+
+    .sticky-form {
+      width: 100%;
+      left: 0;
+      transform: none;
+      border-radius: 0;
+    }
+  
+    .toggle-order {
+      width: 64px;
+      height: 64px;
+      font-size: 1.8rem;
+    }
+
+    input, textarea, select, button {
+      width: 100%;
+      font-size: 1rem;
+    }
+  }
     }
   </style>
 </head>
