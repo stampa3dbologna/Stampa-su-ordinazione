@@ -59,8 +59,8 @@
     p.lead{color:var(--muted);margin:10px 0 0}
 
     .photo img {
-    width: 50%;   /* ridotte */
-    height: auto; /* mantiene proporzioni */
+    width: 10%;   /* ridotte */
+    height: 10%; /* mantiene proporzioni */
     margin: auto;
     display: block;
     }
@@ -151,17 +151,18 @@
             <p class="muted">*I costi variano con complessità. +5€ qualità super. +extra materiali speciali. +spedizione fuori Bologna.</p>
           </section>
         </main>
-
+        <!--
         <aside>
           <div style="padding:14px;border-radius:12px;background:linear-gradient(180deg,var(--glass),#fff);box-shadow:var(--shadow)">
             <h3 style="margin:0 0 8px 0">Consiglio</h3>
             <p class="muted">Per pezzi funzionali scegli qualità normale. Per regali o dettagli scegli super.</p>
           </div>
         </aside>
+        -->
       </div>
     </div>
   </div>
-
+  
   <!-- Sticky bottom form: hidden by default, toggled by button -->
   <form class="sticky-form" id="orderForm" action="https://formsubmit.co/bastia.dario@gmail.com" method="POST" onsubmit="return prepareAndSend(event)">
     <div class="form-left">
@@ -208,10 +209,10 @@
         <div>
           <label for="size">Dimensione</label>
           <select id="size" name="size" class="small">
-            <option value="Micro">Micro (0-5 cm)</option>
-            <option value="Piccola">Piccola (6-10 cm)</option>
-            <option value="Media">Media (11-15 cm)</option>
-            <option value="Grande">Grande (16-22 cm)</option>
+            <option value="Micro">Micro (0-5 cm3)</option>
+            <option value="Piccola">Piccola (6-10 cm3)</option>
+            <option value="Media">Media (11-15 cm3)</option>
+            <option value="Grande">Grande (16-22 cm3)</option>
             <option value="Custom">Personalizzata</option>
           </select>
         </div>
