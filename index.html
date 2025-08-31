@@ -27,6 +27,11 @@
       padding:32px 16px 140px;
       font-size: 20px; 
     }
+
+    .icon {
+    font-size: 2.5rem;   /* più grande (1rem ≈ 16px) */
+    line-height: 1;
+    }
     /*
     p, li {
     font-size: 3rem; 
@@ -54,7 +59,7 @@
     p.lead{color:var(--muted);margin:10px 0 0}
 
     .photo img {
-    width: 99%;   /* ridotte */
+    width: 50%;   /* ridotte */
     height: auto; /* mantiene proporzioni */
     margin: auto;
     display: block;
@@ -171,11 +176,10 @@
         <div style="flex:1">
           <label for="material">Materiale</label>
           <select id="material" name="material">
-            <option value="PLA">PLA</option>
-            <option value="PETG">PETG</option>
+            <option value="PLA">PLA (economico)</option>
+            <option value="PETG">PETG (resistente)</option>
             <option value="TPU">TPU (elastico)</option>
-            <option value="ABS">ABS</option>
-            <option value="Altro">Altro (speciale)</option>
+            <option value="Altro">Altro (spiecificare nelle note)</option>
           </select>
         </div>
         <div>
@@ -184,9 +188,11 @@
             <option value="Nero">Nero</option>
             <option value="Bianco">Bianco</option>
             <option value="Rosso">Rosso</option>
-            <option value="Blu">Blu</option>
-            <option value="Trasparente">Trasparente</option>
-            <option value="Glow">Glow</option>
+            <option value="Azzuro">Azzuro</option>
+            <option value="Giallo">Giallo</option>
+            <option value="Viola">Viola</option>
+            <option value="Arcobaleno">Arcobaleno</option>
+            <option value="Altro">Altro</option>
           </select>
         </div>
       </div>
