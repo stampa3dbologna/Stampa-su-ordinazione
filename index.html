@@ -155,6 +155,35 @@
       width: 100%;
       font-size: 1rem;
     }
+    /* 📱 Mobile: form a tutto schermo */
+@media (max-width: 768px) {
+  .sticky-form {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;      /* copre tutto lo schermo */
+    border-radius: 0;  /* niente angoli arrotondati */
+    box-shadow: none;  /* niente ombre */
+    padding: 20px;
+    overflow-y: auto;  /* scroll interno se serve */
+  }
+
+  .sticky-form h2 {
+    margin-top: 0;
+  }
+
+  .toggle-order {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 64px;
+    height: 64px;
+    font-size: 1.8rem;
+    z-index: 1100;
+  }
+}
+
   }
     }
   </style>
