@@ -1,0 +1,2 @@
+User-agent: *
+Sitemap: https://stampa3dbologna.github.io/Stampa-su-ordinazione/sitemap.xml
