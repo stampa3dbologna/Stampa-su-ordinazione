@@ -27,7 +27,21 @@
       padding:32px 16px 140px;
       font-size: 20px; 
     }
-
+    nav {
+      background-color: #333;
+      padding: 10px;
+      display: flex;
+      justify-content: center; /* centra i link */
+      gap: 20px; /* spazio tra i link */
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
     .icon {
     font-size: 2.5rem;   /* più grande (1rem ≈ 16px) */
     line-height: 1;
@@ -148,6 +162,12 @@
   </style>
 </head>
 <body>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">Su di noi</a>
+    <a href="contatti.html">Contattaci</a>
+    <a href="servizi.html">Servizi</a>
+  </nav>
   <div class="site">
     <div class="card">
       <header>
