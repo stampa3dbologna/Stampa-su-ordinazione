@@ -42,6 +42,7 @@
     }
     .info p {
       margin: 10px 0;
+      font-size: 18px;
     }
     strong {
       color: #333;
@@ -49,9 +50,18 @@
     /* Colori specifici */
     .email {
       color: blue;
+      text-decoration: none;
     }
     .telefono {
       color: green;
+      text-decoration: none;
+    }
+    .email:hover, .telefono:hover {
+      text-decoration: underline;
+    }
+    /* Icone */
+    .icon {
+      margin-right: 8px;
     }
   </style>
 </head>
@@ -68,8 +78,16 @@
     <h1>Contatti</h1>
     <div class="info">
       <p><strong>Nome:</strong> Dario</p>
-      <p><strong>Email:</strong> <span class="email">bastia.dario@gmail.com</span></p>
-      <p><strong>Telefono:</strong> <span class="telefono">+39 353 443 7946</span></p>
+      <p>
+        <span class="icon">✉️</span>
+        <strong>Email:</strong> 
+        <a href="mailto:bastia.dario@gmail.com" class="email">bastia.dario@gmail.com</a>
+      </p>
+      <p>
+        <span class="icon">📞</span>
+        <strong>Telefono:</strong> 
+        <a href="tel:+393534437946" class="telefono">+39 353 443 7946</a>
+      </p>
     </div>
   </div>
 </body>
