@@ -33,6 +33,24 @@
     .row > *{flex:1}
     footer{padding:18px 0;color:var(--muted);font-size:13px;text-align:center;margin-top:24px}
     @media (max-width:720px){.row{flex-direction:column}}
+        /* Stile per la fascia superiore */
+    .top-bar {
+      background-color: #333; /* colore di sfondo della fascia */
+      color: white;           /* colore del testo */
+      padding: 10px 20px;     /* spazio interno */
+      text-align: right;      /* allinea i link a destra */
+    }
+
+    .top-bar a {
+      color: white;           /* colore dei link */
+      text-decoration: none;  /* rimuove la sottolineatura */
+      margin-left: 20px;      /* spazio tra i link */
+      font-weight: bold;
+    }
+
+    .top-bar a:hover {
+      text-decoration: underline; /* effetto hover */
+    }
   </style>
 </head>
 <body>
@@ -42,7 +60,10 @@
       <div style="color:var(--muted);font-size:13px;margin-top:6px">Oggetti stampati in 3D. Aggiungi al carrello e invia l'ordine via email.</div>
     </div>
   </header>
-
+  <div class="top-bar">
+    <a href="contacts.html">Contatti</a>
+    <a href="about.html">Chi sono</a>
+  </div>
   <main class="container" aria-live="polite">
     <div style="display:grid;grid-template-columns:1fr 360px;gap:20px">
       <!-- Prodotti -->
