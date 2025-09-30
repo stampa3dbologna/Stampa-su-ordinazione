@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Negozio 3D — Vasi e Portachiavi</title>
+  <style>
+    :root{
+      --bg:#f6f7fb; --card:#ffffff; --accent:#0b74de; --muted:#6b7280;
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:#111;line-height:1.35}
+    header{background:linear-gradient(90deg,#0b74de22,#0b74de11);padding:20px 16px}
+    .container{max-width:1100px;margin:20px auto;padding:0 16px}
+    h1{margin:0;font-size:20px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:16px}
+    .card{background:var(--card);border-radius:10px;padding:14px;box-shadow:0 1px 4px rgba(15,23,42,.06)}
+    .product-img{height:140px;border-radius:6px;background:#eee;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:14px}
+    .product-title{font-weight:600;margin:10px 0 6px}
+    .product-desc{font-size:13px;color:var(--muted);margin:0 0 10px}
+    .product-row{display:flex;gap:8px;align-items:center;justify-content:space-between}
+    button{background:var(--accent);color:white;border:0;padding:8px 12px;border-radius:8px;cursor:pointer}
+    button.secondary{background:#e6eefc;color:var(--accent);border:1px solid #cfe3ff}
+    .cart{position:sticky;top:20px}
+    .cart .card{display:flex;flex-direction:column;gap:8px}
+    .cart-list{max-height:220px;overflow:auto;padding:6px 2px;border-top:1px dashed #eee}
+    .cart-item{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #fafafa;font-size:14px}
+    label{display:block;font-size:13px;color:var(--muted);margin-top:8px}
+    input,textarea,select{width:100%;padding:8px;border-radius:8px;border:1px solid #e5e7eb;margin-top:6px;font-size:14px}
+    .row{display:flex;gap:12px}
+    .row > *{flex:1}
+    footer{padding:18px 0;color:var(--muted);font-size:13px;text-align:center;margin-top:24px}
+    @media (max-width:720px){.row{flex-direction:column}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Negozio 3D — Vasi & Porta-chiavi</h1>
+      <div style="color:var(--muted);font-size:13px;margin-top:6px">Oggetti stampati in 3D. Aggiungi al carrello e invia l'ordine via email.</div>
+    </div>
+  </header>
+
+  <main class="container" aria-live="polite">
+    <div style="display:grid;grid-template-columns:1fr 360px;gap:20px">
+      <!-- Prodotti -->
+      <section>
+        <div class="grid" id="products">
+          <!-- Card prodotto generata da JS -->
+        </div>
+      </section>
+
+      <!-- Carrello e form -->
+      <aside class="cart">
+        <div class="card">
+          <strong>Carrello</strong>
+          <div class="cart-list" id="cartList">
+            <div style="color:var(--muted);font-size:13px">Nessun articolo.</div>
+          </div>
+
+          <div style="display:flex;gap:8px;align-items:center;justify-content:space-between">
+            <div style="font-weight:600">Totale</div>
+            <div id="cartTotal">€0.00</div>
+          </div>
+
+          <hr style="border:none;border-top:1px dashed #eee;margin:8px 0">
+
+          <form id="orderForm" onsubmit="return handleSubmit(event)" autocomplete="on" novalidate>
+            <label for="custName">Nome completo</label>
+            <input id="custName" name="custName" required placeholder="Mario Rossi">
+
+            <label for="custEmail">Email</label>
+            <input id="custEmail" name="custEmail" type="email" required placeholder="mario@example.com">
+
+            <label for="custAddress">Indirizzo di casa</label>
+            <textarea id="custAddress" name="custAddress" rows="2" required placeholder="Via Roma 1, 00100 Roma"></textarea>
+
+            <label for="note">Note (opzionale)</label>
+            <textarea id="note" name="note" rows="2" placeholder="Colore preferito, finitura..."></textarea>
+
+            <div style="display:flex;gap:8px;margin-top:10px">
+              <button type="submit">Invia ordine via email</button>
+              <button type="button" class="secondary" onclick="clearCart()">Svuota</button>
+            </div>
+
+            <small style="display:block;color:var(--muted);margin-top:8px">
+              L'ordine aprirà la tua email predefinita con il riepilogo. Sostituisci l'indirizzo destinatario nel codice con il tuo indirizzo reale.
+            </small>
+          </form>
+        </div>
+      </aside>
+    </div>
+
+    <footer>
+      <div>Design minimale • 3D Printed Goods</div>
+    </footer>
+  </main>
+
+  <script>
+    // Sostituisci con la tua email destinataria (chi deve ricevere gli ordini)
+    const OWNER_EMAIL = "TUO_INDIRIZZO_EMAIL@example.com";
+
+    // Catalogo prodotti
+    const PRODUCTS = [
+      {id:1,title:"Vaso 'Linea Semplice'",price:12.00,desc:"Vaso decorativo 3D, altezza 12cm"},
+      {id:2,title:"Vaso 'Geometrico'",price:18.50,desc:"Vaso con pattern geometrico, altezza 15cm"},
+      {id:3,title:"Portachiavi 'Anello'",price:4.50,desc:"Portachiavi leggero, stampa PLA"},
+      {id:4,title:"Portachiavi 'Mini Figura'",price:6.00,desc:"Portachiavi a forma di figura stilizzata"},
+      {id:5,title:"Set 3 sottobicchieri",price:9.00,desc:"Set di 3 sottobicchieri resistente"},
+    ];
+
+    // Stato carrello: {productId: qty}
+    const cart = {};
+
+    function formatPrice(v){ return "€" + v.toFixed(2); }
+
+    // Render prodotti
+    const productsEl = document.getElementById('products');
+    PRODUCTS.forEach(p => {
+      const el = document.createElement('article');
+      el.className = 'card';
+      el.innerHTML = `
+        <div class="product-img">Immagine (${p.title})</div>
+        <div class="product-title">${p.title}</div>
+        <div class="product-desc">${p.desc}</div>
+        <div class="product-row">
+          <div style="font-weight:700">${formatPrice(p.price)}</div>
+          <div>
+            <button onclick="addToCart(${p.id})" aria-label="Aggiungi ${p.title}">Aggiungi</button>
+          </div>
+        </div>`;
+      productsEl.appendChild(el);
+    });
+
+    function addToCart(id){
+      cart[id] = (cart[id] || 0) + 1;
+      updateCartUI();
+    }
+
+    function removeFromCart(id){
+      if(!cart[id]) return;
+      cart[id]--;
+      if(cart[id] <= 0) delete cart[id];
+      updateCartUI();
+    }
+
+    function clearCart(){
+      for(const k in cart) delete cart[k];
+      updateCartUI();
+    }
+
+    function updateCartUI(){
+      const list = document.getElementById('cartList');
+      list.innerHTML = '';
+      const ids = Object.keys(cart);
+      if(ids.length === 0){
+        list.innerHTML = '<div style="color:var(--muted);font-size:13px">Nessun articolo.</div>';
+        document.getElementById('cartTotal').textContent = formatPrice(0);
+        return;
+      }
+      let total = 0;
+      ids.forEach(id => {
+        const p = PRODUCTS.find(x => x.id == id);
+        const qty = cart[id];
+        const row = document.createElement('div');
+        row.className = 'cart-item';
+        row.innerHTML = `
+          <div>${p.title} × ${qty}</div>
+          <div style="text-align:right">
+            <div>${formatPrice(p.price * qty)}</div>
+            <div style="margin-top:4px"><button class="secondary" onclick="removeFromCart(${id})">-</button></div>
+          </div>`;
+        list.appendChild(row);
+        total += p.price * qty;
+      });
+      document.getElementById('cartTotal').textContent = formatPrice(total);
+    }
+
+    // Gestione submit: compone mailto con riepilogo
+    function handleSubmit(e){
+      e.preventDefault();
+      const ids = Object.keys(cart);
+      if(ids.length === 0){
+        alert('Il carrello è vuoto.');
+        return false;
+      }
+      const name = document.getElementById('custName').value.trim();
+      const email = document.getElementById('custEmail').value.trim();
+      const address = document.getElementById('custAddress').value.trim();
+      const note = document.getElementById('note').value.trim();
+      if(!name || !email || !address){
+        alert('Compila nome, email e indirizzo.');
+        return false;
+      }
+
+      // Costruisci corpo mail
+      let body = `Ordine da sito 3D%0A%0A`;
+      body += `Nome: ${encodeURIComponent(name)}%0A`;
+      body += `Email cliente: ${encodeURIComponent(email)}%0A`;
+      body += `Indirizzo: ${encodeURIComponent(address)}%0A%0A`;
+      body += `Articoli:%0A`;
+
+      let total = 0;
+      ids.forEach(id => {
+        const p = PRODUCTS.find(x => x.id == id);
+        const qty = cart[id];
+        body += `- ${encodeURIComponent(p.title)} x ${qty} = ${formatPrice(p.price * qty)}%0A`;
+        total += p.price * qty;
+      });
+
+      body += `%0ATotale: ${formatPrice(total)}%0A%0A`;
+      if(note) body += `Note cliente: ${encodeURIComponent(note)}%0A%0A`;
+      body += `Data invio: ${encodeURIComponent(new Date().toLocaleString())}`;
+
+      const subject = encodeURIComponent(`Nuovo ordine da ${name}`);
+
+      // mailto
+      const mailto = `mailto:${OWNER_EMAIL}?subject=${subject}&body=${body}`;
+
+      // Apri client email
+      window.location.href = mailto;
+      return false;
+    }
+
+    // inizializza
+    updateCartUI();
+  </script>
+</body>
+</html>
