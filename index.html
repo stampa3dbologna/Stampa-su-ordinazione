@@ -200,12 +200,32 @@
     }
 
     // Gestione submit: compone mailto con riepilogo
-    function handleSubmit(e){
-      e.preventDefault();
-      const ids = Object.keys(cart);
-      if(ids.length === 0){
-        alert('Il carrello è vuoto.');
-        return false;
+      function handleSubmit(e){
+  e.preventDefault();
+  const ids = Object.keys(cart);
+  if(ids.length === 0){
+    alert('Il carrello è vuoto.');
+    return false;
+  }
+
+  let summary = "Articoli ordinati:\n";
+  let total = 0;
+  ids.forEach(id => {
+    const p = PRODUCTS.find(x => x.id == id);
+    const qty = cart[id];
+    summary += `- ${p.title} x ${qty} = ${formatPrice(p.price * qty)}\n`;
+    total += p.price * qty;
+  });
+  summary += `\nTotale: ${formatPrice(total)}\n\n`;
+  summary += `Data invio: ${new Date().toLocaleString()}`;
+
+  // Inserisce il riepilogo nell'input nascosto
+  document.getElementById('cartSummary').value = summary;
+
+  // Ora il form viene inviato a FormSubmit
+  e.target.submit();
+}
+
       }
       const name = document.getElementById('custName').value.trim();
       const email = document.getElementById('custEmail').value.trim();
