@@ -127,153 +127,79 @@
   </main>
 
   <script>
-    // Sostituisci con la tua email destinataria (chi deve ricevere gli ordini)
-    const OWNER_EMAIL = "Bastia.dario@gmail.com";
+  const PRODUCTS = [
+    {id:1,title:"Vaso 'Linea Semplice'",price:12.00,desc:"Vaso decorativo 3D, altezza 12cm"},
+    {id:2,title:"Vaso 'Geometrico'",price:18.50,desc:"Vaso con pattern geometrico, altezza 15cm"},
+    {id:3,title:"Portachiavi 'Anello'",price:4.50,desc:"Portachiavi leggero, stampa PLA"},
+    {id:4,title:"Portachiavi 'Mini Figura'",price:6.00,desc:"Portachiavi a forma di figura stilizzata"},
+    {id:5,title:"Set 3 sottobicchieri",price:9.00,desc:"Set di 3 sottobicchieri resistente"},
+  ];
 
-    // Catalogo prodotti
-    const PRODUCTS = [
-      {id:1,title:"Vaso 'Linea Semplice'",price:12.00,desc:"Vaso decorativo 3D, altezza 12cm"},
-      {id:2,title:"Vaso 'Geometrico'",price:18.50,desc:"Vaso con pattern geometrico, altezza 15cm"},
-      {id:3,title:"Portachiavi 'Anello'",price:4.50,desc:"Portachiavi leggero, stampa PLA"},
-      {id:4,title:"Portachiavi 'Mini Figura'",price:6.00,desc:"Portachiavi a forma di figura stilizzata"},
-      {id:5,title:"Set 3 sottobicchieri",price:9.00,desc:"Set di 3 sottobicchieri resistente"},
-    ];
+  const cart = {};
+  function formatPrice(v){ return "€" + v.toFixed(2); }
 
-    // Stato carrello: {productId: qty}
-    const cart = {};
+  // Aggiungi/rimuovi dal carrello
+  function addToCart(id){ cart[id] = (cart[id]||0)+1; updateCartUI(); }
+  function removeFromCart(id){ if(cart[id]){ cart[id]--; if(cart[id]<=0) delete cart[id]; updateCartUI(); } }
+  function clearCart(){ for(const k in cart) delete cart[k]; updateCartUI(); }
 
-    function formatPrice(v){ return "€" + v.toFixed(2); }
-
-    // Render prodotti
-    const productsEl = document.getElementById('products');
-    PRODUCTS.forEach(p => {
-      const el = document.createElement('article');
-      el.className = 'card';
-      el.innerHTML = `
-        <div class="product-img">Immagine (${p.title})</div>
-        <div class="product-title">${p.title}</div>
-        <div class="product-desc">${p.desc}</div>
-        <div class="product-row">
-          <div style="font-weight:700">${formatPrice(p.price)}</div>
-          <div>
-            <button onclick="addToCart(${p.id})" aria-label="Aggiungi ${p.title}">Aggiungi</button>
-          </div>
+  function updateCartUI(){
+    const list = document.getElementById('cartList');
+    list.innerHTML = '';
+    const ids = Object.keys(cart);
+    if(ids.length === 0){
+      list.innerHTML = '<div style="color:var(--muted);font-size:13px">Nessun articolo.</div>';
+      document.getElementById('cartTotal').textContent = formatPrice(0);
+      return;
+    }
+    let total = 0;
+    ids.forEach(id => {
+      const p = PRODUCTS.find(x => x.id == id);
+      const qty = cart[id];
+      const row = document.createElement('div');
+      row.className = 'cart-item';
+      row.innerHTML = `
+        <div>${p.title} × ${qty}</div>
+        <div style="text-align:right">
+          <div>${formatPrice(p.price * qty)}</div>
+          <div style="margin-top:4px"><button class="secondary" onclick="removeFromCart(${id})">-</button></div>
         </div>`;
-      productsEl.appendChild(el);
+      list.appendChild(row);
+      total += p.price * qty;
     });
-
-    function addToCart(id){
-      cart[id] = (cart[id] || 0) + 1;
-      updateCartUI();
-    }
-
-    function removeFromCart(id){
-      if(!cart[id]) return;
-      cart[id]--;
-      if(cart[id] <= 0) delete cart[id];
-      updateCartUI();
-    }
-
-    function clearCart(){
-      for(const k in cart) delete cart[k];
-      updateCartUI();
-    }
-
-    function updateCartUI(){
-      const list = document.getElementById('cartList');
-      list.innerHTML = '';
-      const ids = Object.keys(cart);
-      if(ids.length === 0){
-        list.innerHTML = '<div style="color:var(--muted);font-size:13px">Nessun articolo.</div>';
-        document.getElementById('cartTotal').textContent = formatPrice(0);
-        return;
-      }
-      let total = 0;
-      ids.forEach(id => {
-        const p = PRODUCTS.find(x => x.id == id);
-        const qty = cart[id];
-        const row = document.createElement('div');
-        row.className = 'cart-item';
-        row.innerHTML = `
-          <div>${p.title} × ${qty}</div>
-          <div style="text-align:right">
-            <div>${formatPrice(p.price * qty)}</div>
-            <div style="margin-top:4px"><button class="secondary" onclick="removeFromCart(${id})">-</button></div>
-          </div>`;
-        list.appendChild(row);
-        total += p.price * qty;
-      });
-      document.getElementById('cartTotal').textContent = formatPrice(total);
-    }
-
-    // Gestione submit: compone mailto con riepilogo
-      function handleSubmit(e){
-  e.preventDefault();
-  const ids = Object.keys(cart);
-  if(ids.length === 0){
-    alert('Il carrello è vuoto.');
-    return false;
+    document.getElementById('cartTotal').textContent = formatPrice(total);
   }
 
-  let summary = "Articoli ordinati:\n";
-  let total = 0;
-  ids.forEach(id => {
-    const p = PRODUCTS.find(x => x.id == id);
-    const qty = cart[id];
-    summary += `- ${p.title} x ${qty} = ${formatPrice(p.price * qty)}\n`;
-    total += p.price * qty;
-  });
-  summary += `\nTotale: ${formatPrice(total)}\n\n`;
-  summary += `Data invio: ${new Date().toLocaleString()}`;
+  // Submit ordine → invio a FormSubmit
+  function handleSubmit(e){
+    e.preventDefault();
 
-  // Inserisce il riepilogo nell'input nascosto
-  document.getElementById('cartSummary').value = summary;
-
-  // Ora il form viene inviato a FormSubmit
-  e.target.submit();
-}
-
-      }
-      const name = document.getElementById('custName').value.trim();
-      const email = document.getElementById('custEmail').value.trim();
-      const address = document.getElementById('custAddress').value.trim();
-      const note = document.getElementById('note').value.trim();
-      if(!name || !email || !address){
-        alert('Compila nome, email e indirizzo.');
-        return false;
-      }
-
-      // Costruisci corpo mail
-      let body = `Ordine da sito 3D%0A%0A`;
-      body += `Nome: ${encodeURIComponent(name)}%0A`;
-      body += `Email cliente: ${encodeURIComponent(email)}%0A`;
-      body += `Indirizzo: ${encodeURIComponent(address)}%0A%0A`;
-      body += `Articoli:%0A`;
-
-      let total = 0;
-      ids.forEach(id => {
-        const p = PRODUCTS.find(x => x.id == id);
-        const qty = cart[id];
-        body += `- ${encodeURIComponent(p.title)} x ${qty} = ${formatPrice(p.price * qty)}%0A`;
-        total += p.price * qty;
-      });
-
-      body += `%0ATotale: ${formatPrice(total)}%0A%0A`;
-      if(note) body += `Note cliente: ${encodeURIComponent(note)}%0A%0A`;
-      body += `Data invio: ${encodeURIComponent(new Date().toLocaleString())}`;
-
-      const subject = encodeURIComponent(`Nuovo ordine da ${name}`);
-
-      // mailto
-      const mailto = `mailto:${OWNER_EMAIL}?subject=${subject}&body=${body}`;
-
-      // Apri client email
-      window.location.href = mailto;
+    const ids = Object.keys(cart);
+    if(ids.length === 0){
+      alert('Il carrello è vuoto.');
       return false;
     }
 
-    // inizializza
-    updateCartUI();
-  </script>
+    let summary = "Articoli ordinati:\n";
+    let total = 0;
+    ids.forEach(id => {
+      const p = PRODUCTS.find(x => x.id == id);
+      const qty = cart[id];
+      summary += `- ${p.title} x ${qty} = ${formatPrice(p.price * qty)}\n`;
+      total += p.price * qty;
+    });
+    summary += `\nTotale: ${formatPrice(total)}\n\n`;
+    summary += `Data invio: ${new Date().toLocaleString()}`;
+
+    // Inserisci il riepilogo nell'input nascosto
+    document.getElementById('cartSummary').value = summary;
+
+    // Invia il form a FormSubmit
+    e.target.submit();
+  }
+
+  updateCartUI();
+</script>
+
 </body>
 </html>
