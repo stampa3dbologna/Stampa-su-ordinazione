@@ -88,9 +88,16 @@
 
           <hr style="border:none;border-top:1px dashed #eee;margin:8px 0">
 
-          <form id="orderForm" onsubmit="return handleSubmit(event)" autocomplete="on" novalidate>
+          <form id="orderForm" 
+      action="https://formsubmit.co/bastia.dario@gmail.com" 
+      method="POST" 
+      onsubmit="return handleSubmit(event)" 
+      autocomplete="on">
+
             <label for="custName">Nome completo</label>
             <input id="custName" name="custName" required placeholder="Mario Rossi">
+
+            <input type="hidden" id="cartSummary" name="Ordine">
 
             <label for="custEmail">Email</label>
             <input id="custEmail" name="custEmail" type="email" required placeholder="mario@example.com">
