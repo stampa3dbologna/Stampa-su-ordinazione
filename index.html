@@ -130,7 +130,7 @@
   <script>
   document.addEventListener("DOMContentLoaded", () => {
   const PRODUCTS = [
-    {id:1,title:"Porta penne 'geometrico'",price:12.00,desc:"porta penne decorativo 3D, altezza cm 20"},
+    {id:1,title:"Porta penne 'geometrico'",price:12.00,desc:"porta penne decorativo 3D, altezza cm 20", img:"img/porta_penne.jpg"},
     {id:2,title:"Vaso 'Geometrico'",price:18.50,desc:"Vaso con pattern geometrico, altezza 15cm"},
     {id:3,title:"Portachiavi 'Anello'",price:4.50,desc:"Portachiavi leggero, stampa PLA"},
     {id:4,title:"Portachiavi 'Mini Figura'",price:6.00,desc:"Portachiavi a forma di figura stilizzata"},
@@ -147,7 +147,10 @@
     const el = document.createElement('article');
     el.className = 'card';
     el.innerHTML = `
-      <div class="product-img">Immagine (${p.title})</div>
+     <div class="product-img">
+     <img src="${p.img}" alt="${p.title}" style="max-height:100%; max-width:100%; border-radius:6px;">
+     </div>
+
       <div class="product-title">${p.title}</div>
       <div class="product-desc">${p.desc}</div>
       <div class="product-row">
